@@ -18,7 +18,7 @@ async function init() {
     process.exit(1);
   }
 
-  console.log("Initializing ai-trails...\n");
+  console.log("Initializing ai-trailers...\n");
 
   const tools = await detectTools();
 
@@ -33,10 +33,10 @@ async function init() {
 }
 
 function usage() {
-  console.log(`ai-trails - Capture AI coding tools human prompts into git commit messages trails
+  console.log(`ai-trailers - Capture AI coding tool prompts as git trailers in commit messages
 
-Usage: ai-trails <command>
+Usage: ai-trailers <command>
 
 Commands:
-  init      Initialize ai-trails in the current repo`);
+  init      Initialize ai-trailers in the current repo`);
 }

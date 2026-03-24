@@ -1,9 +1,9 @@
 {
-  "name": "ai-trails",
+  "name": "ai-trailers",
   "version": "0.1.0",
   "type": "module",
   "bin": {
-    "ai-trails": "./src/cli.ts"
+    "ai-trailers": "./src/cli.ts"
   },
   "files": ["src"],
   "devDependencies": {
