@@ -18,6 +18,12 @@ The code tells you *what* changed. The trailers tell you *why*.
 2. **Append** — When you commit, a `commit-msg` git hook appends the captured prompts to your commit message as standard git trailers.
 3. **Clear** — The `.ai-trailers` file is cleared after each commit, ready for the next round.
 
+### In action
+
+| GitHub commits page | VS Code git history |
+|:---:|:---:|
+| ![AI trailers on GitHub commits page](https://github.com/user-attachments/assets/d4cc2449-b11c-4f85-b13c-8b06678934be) | ![AI trailers in VS Code git history](https://github.com/user-attachments/assets/b7a3e136-8de7-4ff5-a43c-8f6248414056) |
+
 ## Quick start
 
 ### Prerequisites
