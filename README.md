@@ -20,6 +20,16 @@ The code tells you *what* changed. The trailers tell you *why*.
 
 ## Quick start
 
+### Prerequisites
+
+ai-trailers requires [Bun](https://bun.sh) to be installed. If you don't have it yet:
+
+```bash
+curl -fsSL https://bun.sh/install | bash
+```
+
+### Install
+
 ```bash
 bunx ai-trailers init
 ```
