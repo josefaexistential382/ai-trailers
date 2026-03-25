@@ -27,7 +27,8 @@ Data flow: AI Tool hook → `capture` command → `.ai-trailers` file → `commi
 - **`src/cli.ts`** — Entry point and command dispatcher. Imports all other modules. Reads version from `package.json`.
 - **`src/tools.ts`** — Tool registry. Single source of truth for supported tools (name, marker files, hook event, config format). To add a new tool, add one entry to the `tools` array.
 - **`src/detect.ts`** — Detects AI tools by checking for marker files/directories. Uses the registry from `tools.ts`.
-- **`src/capture.ts`** — Reads JSON with a `prompt` field from stdin, appends formatted git trailers to `.ai-trailers`. Called as `ai-trailers capture --tool <name>`.
+- **`src/extractors.ts`** — Reusable prompt extraction helpers: `extractFromStdin({ format, path })` for JSON/text stdin, `extractFromEnv(varName)` for environment variables. Each tool defines which extractor to use.
+- **`src/capture.ts`** — Looks up the tool by name, calls its `extractPrompt()`, appends formatted git trailers to `.ai-trailers`. Called as `ai-trailers capture --tool <name>`.
 - **`src/install.ts`** — Installs/removes tool hook configs (deep-merges into existing settings files), the `commit-msg` git hook, and `.gitignore` entries. Respects `core.hooksPath`.
 
-**Key design:** All AI tools pipe JSON with a `prompt` field to stdin, so one capture command handles all tools. Each tool only differs in its hook configuration format (defined in `tools.ts`).
+**Key design:** Each tool defines its own `extractPrompt` function in `tools.ts` using helpers from `extractors.ts`. Tools differ in how they pass the prompt (stdin JSON, env var) and their hook config format. Adding a new tool is one entry in the `tools` array.
