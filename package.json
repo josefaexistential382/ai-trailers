@@ -1,6 +1,6 @@
 {
   "name": "ai-trailers",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Capture AI coding tool prompts as git trailers in commit messages",
   "type": "module",
   "bin": {
