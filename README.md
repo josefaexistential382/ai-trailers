@@ -6,9 +6,11 @@ Capture AI coding tool prompts as git trailers in commit messages.
 
 AI coding tools are transforming how we write software. But when you look at a git history, you only see the code that changed — not the human intent that guided it.
 
-Every prompt you write to an AI tool is a decision. It captures *why* you made a change, *what* you asked for, and *how* you directed the AI. Today, that context is lost the moment your session ends.
+Every prompt you write to an AI tool is a decision. It captures *why* you made a change, *what* you asked for, and *how* you directed the AI. Today, that context is lost the moment your session ends — scattered across different tools, each with its own siloed conversation history. Switch from Claude Code to Kiro to Gemini, and the intent behind your changes is fragmented across tools that don't talk to each other.
 
-**ai-trailers** preserves that context by embedding your prompts directly into commit messages as standard git trailers — making your intent searchable, reviewable, and permanent.
+This matters most during PR reviews. The diff shows what changed, the PR description is often AI-generated, but the *human steering* — the actual prompts that shaped the code — is nowhere to be found.
+
+**ai-trailers** fixes this by embedding your prompts directly into commit messages as standard git trailers. One central place, regardless of which AI tool you used — making your intent searchable, reviewable, and permanent.
 
 The code tells you *what* changed. The trailers tell you *why*.
 
