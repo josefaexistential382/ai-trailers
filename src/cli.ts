@@ -12,6 +12,7 @@ import {
   getStatus,
 } from "./install";
 import { getToolByName, getTools } from "./tools";
+import pkg from "../package.json";
 
 const command = Bun.argv[2];
 
@@ -33,6 +34,14 @@ switch (command) {
     break;
   case "capture":
     await capture();
+    break;
+  case "--version":
+  case "-v":
+    console.log(`ai-trailers v${pkg.version}`);
+    break;
+  case "--help":
+  case "-h":
+    help();
     break;
   default:
     usage();
@@ -224,17 +233,43 @@ async function log() {
 }
 
 function usage() {
-  console.log(`ai-trailers - Capture AI coding tool prompts as git trailers in commit messages
+  console.log(`ai-trailers v${pkg.version} - Capture AI coding tool prompts as git trailers
 
-Usage: ai-trailers <command>
+Run "ai-trailers --help" for more information.`);
+}
 
-Commands:
-  init               Initialize ai-trailers in the current repo
-  install <tool>     Install hook for a specific tool
-  remove [tool]      Remove all hooks, or a specific tool's hook
-  status             Show installation status and pending prompts
-  log [count]        Show recent commits with AI trailers (default: 20)
-  capture            Capture a prompt from stdin (used by tool hooks)
+function help() {
+  const tools = getTools().map((t) => t.name).join(", ");
 
-Available tools: ${getTools().map((t) => t.name).join(", ")}`);
+  console.log(`
+  ai-trailers v${pkg.version}
+  Capture AI coding tool prompts as git trailers in commit messages
+
+  USAGE
+    ai-trailers <command> [options]
+
+  COMMANDS
+    init               Auto-detect AI tools and install all hooks
+    install <tool>     Install hook for a specific tool
+    remove [tool]      Remove all hooks, or just one tool's hook
+    status             Show installation status and pending prompts
+    log [count]        Show recent commits with AI trailers (default: 20)
+
+  OPTIONS
+    -h, --help         Show this help message
+    -v, --version      Show version number
+
+  SUPPORTED TOOLS
+    ${tools}
+
+  ENVIRONMENT
+    AI_TRAILERS_TIMESTAMP=1    Include timestamps in trailers (opt-in)
+
+  EXAMPLES
+    bunx ai-trailers init                  Auto-detect and install
+    bunx ai-trailers install "Claude Code"  Install for a specific tool
+    bunx ai-trailers status                Show what's installed
+    bunx ai-trailers remove                Uninstall everything
+    bunx ai-trailers log 10               Show last 10 commits with trailers
+`);
 }

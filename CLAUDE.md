@@ -1,106 +1,33 @@
+# CLAUDE.md
 
-Default to using Bun instead of Node.js.
+This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
-- Use `bun <file>` instead of `node <file>` or `ts-node <file>`
-- Use `bun test` instead of `jest` or `vitest`
-- Use `bun build <file.html|file.ts|file.css>` instead of `webpack` or `esbuild`
-- Use `bun install` instead of `npm install` or `yarn install` or `pnpm install`
-- Use `bun run <script>` instead of `npm run <script>` or `yarn run <script>` or `pnpm run <script>`
-- Use `bunx <package> <command>` instead of `npx <package> <command>`
-- Bun automatically loads .env, so don't use dotenv.
+## Project
 
-## APIs
+ai-trailers is a Bun-only CLI tool (`bunx ai-trailers`) that captures AI coding tool prompts and embeds them as standard git trailers in commit messages. No runtime dependencies — uses only Bun built-ins and Node.js standard library.
 
-- `Bun.serve()` supports WebSockets, HTTPS, and routes. Don't use `express`.
-- `bun:sqlite` for SQLite. Don't use `better-sqlite3`.
-- `Bun.redis` for Redis. Don't use `ioredis`.
-- `Bun.sql` for Postgres. Don't use `pg` or `postgres.js`.
-- `WebSocket` is built-in. Don't use `ws`.
-- Prefer `Bun.file` over `node:fs`'s readFile/writeFile
-- Bun.$`ls` instead of execa.
+## Commands
 
-## Testing
-
-Use `bun test` to run tests.
-
-```ts#index.test.ts
-import { test, expect } from "bun:test";
-
-test("hello world", () => {
-  expect(1).toBe(1);
-});
+```bash
+bun ./src/cli.ts <command>    # Run CLI directly during development
+bun install                   # Install dev dependencies
+bun test                      # Run tests (bun:test)
 ```
 
-## Frontend
+## Bun conventions
 
-Use HTML imports with `Bun.serve()`. Don't use `vite`. HTML imports fully support React, CSS, Tailwind.
+Default to Bun instead of Node.js for everything: `bun` not `node`, `bunx` not `npx`, `bun install` not `npm install`. Prefer `Bun.file`/`Bun.write` over `node:fs` readFile/writeFile. Bun auto-loads `.env` — don't use dotenv.
 
-Server:
+## Architecture
 
-```ts#index.ts
-import index from "./index.html"
+Data flow: AI Tool hook → `capture` command → `.ai-trailers` file → `commit-msg` git hook → commit message trailers → file cleared.
 
-Bun.serve({
-  routes: {
-    "/": index,
-    "/api/users/:id": {
-      GET: (req) => {
-        return new Response(JSON.stringify({ id: req.params.id }));
-      },
-    },
-  },
-  // optional websocket support
-  websocket: {
-    open: (ws) => {
-      ws.send("Hello, world!");
-    },
-    message: (ws, message) => {
-      ws.send(message);
-    },
-    close: (ws) => {
-      // handle close
-    }
-  },
-  development: {
-    hmr: true,
-    console: true,
-  }
-})
-```
+**Modules:**
 
-HTML files can import .tsx, .jsx or .js files directly and Bun's bundler will transpile & bundle automatically. `<link>` tags can point to stylesheets and Bun's CSS bundler will bundle.
+- **`src/cli.ts`** — Entry point and command dispatcher. Imports all other modules. Reads version from `package.json`.
+- **`src/tools.ts`** — Tool registry. Single source of truth for supported tools (name, marker files, hook event, config format). To add a new tool, add one entry to the `tools` array.
+- **`src/detect.ts`** — Detects AI tools by checking for marker files/directories. Uses the registry from `tools.ts`.
+- **`src/capture.ts`** — Reads JSON with a `prompt` field from stdin, appends formatted git trailers to `.ai-trailers`. Called as `ai-trailers capture --tool <name>`.
+- **`src/install.ts`** — Installs/removes tool hook configs (deep-merges into existing settings files), the `commit-msg` git hook, and `.gitignore` entries. Respects `core.hooksPath`.
 
-```html#index.html
-<html>
-  <body>
-    <h1>Hello, world!</h1>
-    <script type="module" src="./frontend.tsx"></script>
-  </body>
-</html>
-```
-
-With the following `frontend.tsx`:
-
-```tsx#frontend.tsx
-import React from "react";
-import { createRoot } from "react-dom/client";
-
-// import .css files directly and it works
-import './index.css';
-
-const root = createRoot(document.body);
-
-export default function Frontend() {
-  return <h1>Hello, world!</h1>;
-}
-
-root.render(<Frontend />);
-```
-
-Then, run index.ts
-
-```sh
-bun --hot ./index.ts
-```
-
-For more information, read the Bun API docs in `node_modules/bun-types/docs/**.mdx`.
+**Key design:** All AI tools pipe JSON with a `prompt` field to stdin, so one capture command handles all tools. Each tool only differs in its hook configuration format (defined in `tools.ts`).

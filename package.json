@@ -1,11 +1,34 @@
 {
   "name": "ai-trailers",
   "version": "0.1.0",
+  "description": "Capture AI coding tool prompts as git trailers in commit messages",
   "type": "module",
   "bin": {
     "ai-trailers": "./src/cli.ts"
   },
   "files": ["src"],
+  "keywords": [
+    "git",
+    "git-trailers",
+    "ai",
+    "cli",
+    "claude-code",
+    "codex",
+    "kiro",
+    "gemini",
+    "hooks",
+    "commit-message"
+  ],
+  "author": "Eslam Hamouda",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/EslaMx7/ai-trailers"
+  },
+  "homepage": "https://github.com/EslaMx7/ai-trailers#readme",
+  "bugs": {
+    "url": "https://github.com/EslaMx7/ai-trailers/issues"
+  },
   "devDependencies": {
     "@types/bun": "latest"
   },
