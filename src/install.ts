@@ -77,6 +77,27 @@ export async function installTool(tool: AiTool, cwd: string = process.cwd()): Pr
   await mkdir(dirname(settingsPath), { recursive: true });
 
   await Bun.write(settingsPath, JSON.stringify(merged, null, 2) + "\n");
+
+  // Handle extra files (e.g. feature flags)
+  if (tool.hook.extraFiles) {
+    for (const extra of tool.hook.extraFiles) {
+      const extraPath = join(cwd, extra.path);
+      const extraFile = Bun.file(extraPath);
+      await mkdir(dirname(extraPath), { recursive: true });
+
+      if (await extraFile.exists()) {
+        if (extra.marker) {
+          const content = await extraFile.text();
+          if (!content.includes(extra.marker)) {
+            await Bun.write(extraPath, content + extra.content);
+          }
+        }
+      } else {
+        await Bun.write(extraPath, extra.content);
+      }
+    }
+  }
+
   return true;
 }
 

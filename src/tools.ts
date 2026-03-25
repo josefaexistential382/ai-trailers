@@ -5,6 +5,17 @@ export type ToolHookConfig = {
   settingsPath: string;
   /** Generate the hook configuration JSON to add to the tool's settings */
   generateConfig: () => Record<string, unknown>;
+  /** Additional files to create/update during install (e.g. feature flags) */
+  extraFiles?: ExtraFile[];
+};
+
+export type ExtraFile = {
+  path: string;
+  content: string;
+  /** If true, only create if file doesn't exist. If false, append if marker not present. */
+  createOnly?: boolean;
+  /** Marker to check before appending (avoids duplicates) */
+  marker?: string;
 };
 
 export type AiTool = {
@@ -75,6 +86,36 @@ const tools: AiTool[] = [
           ],
         },
       }),
+    },
+  },
+  {
+    name: "Codex",
+    markers: [".codex"],
+    hook: {
+      hookEvent: "UserPromptSubmit",
+      settingsPath: ".codex/hooks.json",
+      generateConfig: () => ({
+        hooks: {
+          UserPromptSubmit: [
+            {
+              hooks: [
+                {
+                  type: "command",
+                  command: `bunx ai-trailers capture --tool "Codex"`,
+                  timeoutSec: 10,
+                },
+              ],
+            },
+          ],
+        },
+      }),
+      extraFiles: [
+        {
+          path: ".codex/config.toml",
+          marker: "codex_hooks",
+          content: "\n[features]\ncodex_hooks = true\n",
+        },
+      ],
     },
   },
 ];
